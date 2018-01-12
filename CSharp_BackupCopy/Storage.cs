@@ -1,4 +1,5 @@
 ﻿using System;
+using static System.Console;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,8 +24,8 @@ namespace CSharp_BackupCopy
         }
 
 
-        public abstract void GettingTheAmountOfMemory();    // TODO int !?
-        public abstract void CopyingDataToTheDevice();
+        public abstract int GettingTheAmountOfMemory();    // TODO int !?
+        public abstract void CopyingDataToTheDevice(WorkPC workPC);
         public abstract void FreeMemoryOnTheDevice();   // TODO int !?
         public abstract void GettingFullInformationAboutTheDevice();
 
@@ -37,8 +38,11 @@ namespace CSharp_BackupCopy
 
     class Flash : Storage
     {
-        int _speed_USB_3;
-        int _memory;
+        int _speed_USB_3;   // TODO свойство !?
+        int _memory;        // TODO свойство !?
+
+        public int BusyMemory { get; set; }
+        public int FreeMemory { get; set; }
 
         public Flash(string name, string model) : base(name, model) {}
         public Flash(string name, string model, int speed) : base(name, model)
@@ -47,33 +51,49 @@ namespace CSharp_BackupCopy
         }
         public Flash(string name, string model, int speed, int memory) : base(name, model)
         {
-
+            _speed_USB_3 = speed;
+            _memory = memory;
+            BusyMemory = 0;
+            FreeMemory = _memory;
         }
 
-
-        public override void GettingTheAmountOfMemory()
+        // Получение объема памяти.
+        public override int GettingTheAmountOfMemory()
         {
-            throw new NotImplementedException();
+            return _memory;
         }
-
-        public override void CopyingDataToTheDevice()
+        // Копирование данных(файлов/папок) на устройство.
+        public override void CopyingDataToTheDevice(WorkPC workPc) // передаю файлы
         {
-            throw new NotImplementedException();
-        }
+            // Узнаем сколько файлов вмещается на флешку.
+            int numberOfFiles = _memory / workPc.FileSize;
 
+            Write($" Копирование: ");
+
+            for (int i = 0; i < numberOfFiles; i++)
+            {
+                WriteLine("#");
+
+                BusyMemory += workPc.FileSize;
+                workPc.TotalSizeOfFiles -= workPc.FileSize;
+            }
+        }
+        // Получение информации о свободном объеме памяти на устройстве.
         public override void FreeMemoryOnTheDevice()
         {
-            throw new NotImplementedException();
+            WriteLine($" Free memory: {FreeMemory} Gb");
         }
-
+        // Получение общей/полной информации об устройстве.
         public override void GettingFullInformationAboutTheDevice()
         {
-            throw new NotImplementedException();
+            WriteLine(this);
+            WriteLine($"\n Busy memory: {BusyMemory} Gb\n Free memory: {FreeMemory} Gb");
         }
 
         public override string ToString()
         {
-            return base.ToString() + $" Speed: {_speed_USB_3}\n Memory: {_memory}";
+            return base.ToString() +
+                $"\n Speed: {_speed_USB_3} Mb/s\n Memory: {_memory} Gb";
         }
     }
 }
