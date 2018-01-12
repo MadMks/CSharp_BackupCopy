@@ -36,7 +36,10 @@ namespace CSharp_BackupCopy
             storage.GettingFullInformationAboutTheDevice();
         }
 
-        //static void 
+        static void TotalMemory(/* передаю ... */)
+        {
+
+        }
 
     }
 }
