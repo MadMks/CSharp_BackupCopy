@@ -15,7 +15,8 @@ namespace CSharp_BackupCopy
         //protected string Model { get; set; }    // TODO public
         public string Name { get; set; }
         public string Model { get; set; }
-
+        public int BusyMemory { get; set; }
+        public int FreeMemory { get; set; }
 
         public Storage(string name, string model)
         {
@@ -23,9 +24,9 @@ namespace CSharp_BackupCopy
             Model = model;
         }
 
-
+        // Получение объема памяти на носителе (max).
         public abstract int GettingTheAmountOfMemory();    // TODO int !?
-        public abstract void CopyingDataToTheDevice(WorkPC workPC);
+        public abstract void CopyingDataToTheDevice(WorkPC workPC); // TODO bool "from из" или на
         public abstract void FreeMemoryOnTheDevice();   // TODO int !?
         public abstract void GettingFullInformationAboutTheDevice();
 
@@ -41,8 +42,7 @@ namespace CSharp_BackupCopy
         int _speed_USB_3;   // TODO свойство !?
         int _memory;        // TODO свойство !?
 
-        public int BusyMemory { get; set; }
-        public int FreeMemory { get; set; }
+        
 
         public Flash(string name, string model) : base(name, model) {}
         public Flash(string name, string model, int speed) : base(name, model)
@@ -57,7 +57,7 @@ namespace CSharp_BackupCopy
             FreeMemory = _memory;
         }
 
-        // Получение объема памяти.
+        // Получение объема памяти на носителе (max).
         public override int GettingTheAmountOfMemory()
         {
             return _memory;
