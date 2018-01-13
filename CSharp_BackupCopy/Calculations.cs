@@ -1,4 +1,5 @@
 ﻿using System;
+using static System.Console;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,30 +24,85 @@ namespace CSharp_BackupCopy
         // Копирование информации на устройства.
         public static void CopyingInfo(/*bool from,*/ WorkPC workPC, Storage[] storage)    // TODO abs class PC
         {
-            for (int i = 0; i < storage.Length; i++)
-            {
+            //for (int i = 0; i < storage.Length; i++)
+            //{
 
-            }
+            //}
             /* or */
-            foreach (Storage item in storage)
+            while (workPC.TotalSizeOfFiles != 0)
             {
-                item.CopyingDataToTheDevice(workPC);
+                foreach (Storage item in storage)
+                {
+                    item.CopyingDataToTheDevice(workPC);
+                }
             }
-
+            WriteLine();
             // TODO
             // копирование на HoumPC
         }
         // Расчет времени необходимого для копирования.
-        public static int CopyTime(WorkPC workPC, Storage[] storage)
+        public static void CopyTime(WorkPC workPC, Storage[] storage)
         {
-            /* code */
+            int recordingTime = 0;
+            int readingTime = 0;
+            int files;
+            int totalSizeOfFiles = workPC.TotalSizeOfFiles;
 
-            return 0;   // TODO re
+            while (totalSizeOfFiles != 0)
+            {
+                foreach (Storage item in storage)
+                {
+                    files = item.PlacedFiles(workPC.FileSize);
+                    recordingTime += ((workPC.FileSize * files) * 1024) / item.RecordingTime();
+
+                    readingTime += ((workPC.FileSize * files) * 1024) / item.ReadingTime();
+
+                    // Отнимаем от общего размера, размер вмещающихся файлов.
+                    totalSizeOfFiles =
+                        totalSizeOfFiles - (workPC.FileSize * files);
+                }
+            }
+
+            WriteLine($" Время копирования на носители: {recordingTime}");
+            WriteLine($" Время чтения с носителей: {readingTime}");
+            WriteLine(" Общее время копирования на другой пк: "
+                + $"{recordingTime + readingTime}");
+
+            //return recordingTime;
         }
         // Расчет необходимого количества носителей информации
         // представленных типов для переноса информации.
         public static void NumberOfStorage(WorkPC workPC, Storage[] storage)
         {
+            int totalSizeOfFiles = workPC.TotalSizeOfFiles;
+            int files;  // TODO полиморфизм для files !!!
+            int[] arr = new int[storage.Length];
+
+            while (totalSizeOfFiles != 0) {
+                for (int i = 0; i < storage.Length; i++)
+                {
+                    // TODO полиморфизм для files !!!
+
+                    // Узнаем кол-во файлов вмещающихся на носитель.
+                    //files = storage[i].GettingTheAmountOfMemory() / workPC.FileSize;
+                    files = storage[i].PlacedFiles(workPC.FileSize);
+                    // Отнимаем от общего размера, размер вмещающихся файлов.
+                    totalSizeOfFiles =
+                        totalSizeOfFiles - (workPC.FileSize * files);
+
+
+                    if (files > 0)
+                    {
+                        arr[i]++;
+                    }
+                }
+            }
+
+
+            for (int i = 0; i < storage.Length; i++)
+            {
+                WriteLine($" Количество {storage[i].Name}: {arr[i]}");
+            }
 
             // если есть флешка, то флешек нужно
             // ...

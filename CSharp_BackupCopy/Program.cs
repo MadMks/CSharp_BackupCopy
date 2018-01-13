@@ -14,13 +14,30 @@ namespace CSharp_BackupCopy
             WorkPC workPC = new WorkPC();
 
             // test
-            Storage storage = new Flash("Transcend", "TX", 5, 8);
-
+            Storage storage1 = new Flash("Transcend", "TX", 5, 8);
+            Storage storage2 = new Flash("Respect", "TX", 10, 4);
 
             User user = new User();
-            user.AddStorage(storage);
+            user.AddStorage(storage1);
+            user.AddStorage(storage2);
 
-            Calculations.TotalDeviceMemory()
+            Write(" Общее кол-во памяти всех устройств: ");
+            WriteLine(Calculations.TotalDeviceMemory(user.GetDevices()) + "\n");
+
+            WriteLine(workPC);
+
+            Calculations.NumberOfStorage(workPC, user.GetDevices());
+            WriteLine(workPC);
+
+            //Write(" Время: ");
+            //WriteLine(Calculations.CopyTime(workPC, user.GetDevices()));
+            //Design.Line();
+            Calculations.CopyTime(workPC, user.GetDevices());
+            Design.Line();
+
+            Write(" Копируем все файлы: ");
+            Calculations.CopyingInfo(workPC, user.GetDevices());
+            WriteLine(workPC);
         }
     }
 }

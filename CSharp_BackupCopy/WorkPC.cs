@@ -19,13 +19,14 @@ namespace CSharp_BackupCopy
 
         public override string ToString()
         {
-            return $" Total size of files on the working pc: {TotalSizeOfFiles}";
+            return $" Total size of files on the working pc: {TotalSizeOfFiles}"
+                + $"\n File size: {FileSize}";
         }
     }
 
     class User
     {
-        Storage[] _storage;
+        private Storage[] _storage;
 
         public User()
         {
@@ -36,6 +37,11 @@ namespace CSharp_BackupCopy
         {
             Array.Resize(ref _storage, _storage.Length + 1);
             _storage[_storage.Length - 1] = storage;
+        }
+
+        public Storage[] GetDevices()
+        {
+            return _storage;
         }
     }
 }
