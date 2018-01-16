@@ -11,33 +11,42 @@ namespace CSharp_BackupCopy
     {
         static void Main(string[] args)
         {
-            WorkPC workPC = new WorkPC();
+            //WorkPC workPC = new WorkPC();
 
-            // test
-            Storage storage1 = new Flash("Transcend", "TX", 5, 8);
-            Storage storage2 = new Flash("Respect", "TX", 10, 4);
+            //Storage st = new Flash(); // test
 
-            User user = new User();
-            user.AddStorage(storage1);
-            user.AddStorage(storage2);
+            //Storage storage1 = new Flash("Transcend", "TX", 5, 8);
+            //Storage storage2 = new Flash("Respect", "TX", 10, 4);
+            ////WriteLine(st);
+            //User user = new User();
+            //user.AddStorage(storage1);
+            //user.AddStorage(storage2);
 
-            Write(" Общее кол-во памяти всех устройств: ");
-            WriteLine(Calculations.TotalDeviceMemory(user.GetDevices()) + "\n");
-
-            WriteLine(workPC);
-
-            Calculations.NumberOfStorage(workPC, user.GetDevices());
-            WriteLine(workPC);
-
-            //Write(" Время: ");
-            //WriteLine(Calculations.CopyTime(workPC, user.GetDevices()));
+            //Write(" Общее кол-во памяти всех устройств: ");
+            //WriteLine(Calculations.TotalDeviceMemory(user.GetDevices()) + "\n");
             //Design.Line();
-            Calculations.CopyTime(workPC, user.GetDevices());
-            Design.Line();
 
-            Write(" Копируем все файлы: ");
-            Calculations.CopyingInfo(workPC, user.GetDevices());
-            WriteLine(workPC);
+            //WriteLine(workPC);
+            //Design.Line();
+
+            //Calculations.NumberOfStorage(workPC, user.GetDevices());
+            //Design.Line();
+            //WriteLine(workPC);
+            //Design.Line();
+
+
+            //Calculations.CopyTime(workPC, user.GetDevices());
+            //Design.Line();
+
+            //Write(" Копируем все файлы: ");
+            //Calculations.CopyingInfo(workPC, user.GetDevices());
+            //WriteLine(workPC);
+
+            //Menu menu = new Menu();
+            
+            User user = new User();
+            Menu.Start(user);
+            //Menu.AddUserStorage(user);
         }
     }
 }
