@@ -19,9 +19,9 @@ namespace CSharp_BackupCopy
 
             ConsoleKeyInfo SymbolKey;
 
-            //do
-            //{
-            while (ReadKey().Key != ConsoleKey.Escape) {
+            do
+            {
+            //while (ReadKey().Key != ConsoleKey.Escape) {
                 Clear();
                 WriteLine(" Меню:");
 
@@ -44,25 +44,27 @@ namespace CSharp_BackupCopy
                     case ConsoleKey.A:
                         AddUserStorage(user);
                         break;
+                    //case ConsoleKey.Escape:
+                    //    return;
                     default:
                         break;
                 }
 
-                //if (SymbolKey.Key != ConsoleKey.Escape)
-                //{
-                //    // Пауза
-                //ReadKey();
-                //Clear();
-                //}
-                if (SymbolKey.Key == ConsoleKey.Escape)
+                if (SymbolKey.Key != ConsoleKey.Escape)
                 {
-                    break;
+                    // Пауза
+                    ReadKey();
+                    Clear();
                 }
+                //if (SymbolKey.Key == ConsoleKey.Escape)
+                //{
+                //    break;
+                //}
 
-                //} while (SymbolKey.Key != ConsoleKey.Escape);
+            } while (SymbolKey.Key != ConsoleKey.Escape);
                 //} while (ReadKey().Key != ConsoleKey.Escape);
                 //} while (ReadKey().Key != ConsoleKey.Escape);
-            }
+            //}
 
         }
 
