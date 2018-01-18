@@ -45,7 +45,8 @@ namespace CSharp_BackupCopy
             //Menu menu = new Menu();
             
             User user = new User();
-            Menu.Start(user);
+            WorkPC workPC = new WorkPC();
+            Menu.Start(user, workPC);
             //Menu.AddUserStorage(user);
         }
     }

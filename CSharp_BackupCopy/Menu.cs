@@ -14,67 +14,70 @@ namespace CSharp_BackupCopy
 
         //}
 
-        public static void Start(User user)
+        public static void Start(User user, WorkPC workPC)
         {
 
             ConsoleKeyInfo SymbolKey;
 
             do
             {
-            //while (ReadKey().Key != ConsoleKey.Escape) {
-                Clear();
                 WriteLine(" Меню:");
-
-
 
                 WriteLine(" 1 - Посмотреть список носителей");
                 WriteLine(" 2 - Добавить носитель");
-                WriteLine(" 3 - Добавить носитель");
+                WriteLine(" 3 - Общее количество памяти всех носителей");
+                WriteLine(" 4 - Копирование информации на носители");
+                WriteLine(" 5 - Время необходимое для копирования");
+                WriteLine(" 6 - Необходимое количество носителей");
+                WriteLine(" 0 - Выход");
 
                 Write(" Ваш выбор: ");
                 SymbolKey = ReadKey();
                 WriteLine();
+                Design.Line();
 
                 switch (SymbolKey.Key)
-                //switch (Convert.ToInt32(ReadLine()))
                 {
-                    case ConsoleKey.P:
+                    case ConsoleKey.D1 :
                         PrintStorage(user.GetDevices());
                         break;
-                    case ConsoleKey.A:
+                    case ConsoleKey.D2 :
                         AddUserStorage(user);
                         break;
-                    //case ConsoleKey.Escape:
-                    //    return;
+                    case ConsoleKey.D3 :
+                        Calculations.TotalDeviceMemory(user.GetDevices());
+                        break;
+                    case ConsoleKey.D4 :
+                        Calculations.CopyingInfo(workPC, user.GetDevices());
+                        break;
+                    //case ConsoleKey.D0 :
+                    //    break;
                     default:
                         break;
                 }
 
-                if (SymbolKey.Key != ConsoleKey.Escape)
-                {
-                    // Пауза
-                    ReadKey();
-                    Clear();
-                }
-                //if (SymbolKey.Key == ConsoleKey.Escape)
-                //{
-                //    break;
-                //}
+                // Пауза
+                WriteLine("\n\n Нажмите любую клавишу");
+                ReadKey();
+                Clear();
 
-            } while (SymbolKey.Key != ConsoleKey.Escape);
-                //} while (ReadKey().Key != ConsoleKey.Escape);
-                //} while (ReadKey().Key != ConsoleKey.Escape);
-            //}
+            } while (SymbolKey.Key != ConsoleKey.D0);
 
         }
 
         public static void PrintStorage(Storage[] storage)
         {
-            WriteLine("\n\n >>> work print storage");
+            WriteLine("\n Список всех носителей:\n");
+
+            foreach (Storage item in storage)
+            {
+                item.GettingFullInformationAboutTheDevice();
+            }
         }
 
         public static void AddUserStorage(User user)
         {
+            ConsoleKeyInfo SymbolKey;
 
             WriteLine(" Выберите тип носителя:");
 
@@ -82,13 +85,18 @@ namespace CSharp_BackupCopy
             WriteLine(" 2 - DVD");
             WriteLine(" 3 - HDD");
 
-            switch(Convert.ToInt32(ReadLine()))
+            Write(" Ваш выбор: ");
+            SymbolKey = ReadKey();
+            WriteLine();
+            Design.Line();
+
+            switch (SymbolKey.Key)
             {
-                case 1:
+                case ConsoleKey.D1 :
                     //user.AddStorage(Flash.Add());
                     user.AddStorage(new Flash().Add());
                     break;
-                case 2:
+                case ConsoleKey.D2 :
                     user.AddStorage(new Flash().Add());
                     break;
                 default:

@@ -13,7 +13,7 @@ namespace CSharp_BackupCopy
 
 
         // Расчет общего количества памяти всех устройств.
-        public static int TotalDeviceMemory(Storage[] storage)
+        public static void TotalDeviceMemory(Storage[] storage)
         {
             int totalMemory = 0;
 
@@ -22,7 +22,9 @@ namespace CSharp_BackupCopy
                 totalMemory += item.GettingTheAmountOfMemory();
             }
 
-            return totalMemory;
+            Write(" Общее кол-во памяти всех устройств: ");
+            WriteLine(totalMemory + "Gb\n");
+            //return totalMemory;
         }
 
 

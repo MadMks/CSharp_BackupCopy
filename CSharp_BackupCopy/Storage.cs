@@ -88,7 +88,7 @@ namespace CSharp_BackupCopy
         public override void GettingFullInformationAboutTheDevice()
         {
             WriteLine(this);
-            WriteLine($"\n Busy memory: {BusyMemory} Gb" + 
+            WriteLine($" Busy memory: {BusyMemory} Gb" + 
                 $"\n Free memory: {FreeMemoryOnTheDevice()} Gb");  
         }
 
