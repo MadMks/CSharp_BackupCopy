@@ -28,7 +28,7 @@ namespace CSharp_BackupCopy
 
         public override string ToString()
         {
-            return $" Name: {Name}\n Model: {Model}";
+            return $" Название: {Name}\n Модель: {Model}";
         }
 
         public abstract int PlacedFiles(int fileSize);
@@ -73,8 +73,6 @@ namespace CSharp_BackupCopy
 
             for (int i = 0; i < numberOfFiles; i++)
             {
-                Write("#");
-
                 BusyMemory += workPc.FileSize;
                 workPc.TotalSizeOfFiles -= workPc.FileSize;
             }
@@ -88,14 +86,14 @@ namespace CSharp_BackupCopy
         public override void GettingFullInformationAboutTheDevice()
         {
             WriteLine(this);
-            WriteLine($" Busy memory: {BusyMemory} Gb" + 
-                $"\n Free memory: {FreeMemoryOnTheDevice()} Gb");  
+            WriteLine($" Занято: {BusyMemory} Gb" + 
+                $"\n Свободно: {FreeMemoryOnTheDevice()} Gb");  
         }
 
         public override string ToString()
         {
             return base.ToString() +
-                $"\n Speed: {_speed_USB_3} Mb/s\n Memory: {_memory} Gb";
+                $"\n Скорость: {_speed_USB_3} Mb/s\n Объем памяти: {_memory} Gb";
         }
         // TODO использоваь вместо files !!!
         public override int PlacedFiles(int fileSize)

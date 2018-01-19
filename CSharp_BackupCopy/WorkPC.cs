@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CSharp_BackupCopy
 {
-    class WorkPC    // TODO хранить инфо на Storage
+    class WorkPC
     {
         public int TotalSizeOfFiles { get; set; }  
         public int FileSize { get; set; }
@@ -19,8 +19,8 @@ namespace CSharp_BackupCopy
 
         public override string ToString()
         {
-            return $" Total size of files on the working pc: {TotalSizeOfFiles}"
-                + $"\n File size: {FileSize}";
+            return $" Размер файлов на ПК: {TotalSizeOfFiles}"
+                + $"\n Размер одного файла: {FileSize}";
         }
     }
 

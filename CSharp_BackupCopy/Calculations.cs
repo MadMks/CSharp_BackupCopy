@@ -23,8 +23,7 @@ namespace CSharp_BackupCopy
             }
 
             Write(" Общее кол-во памяти всех устройств: ");
-            WriteLine(totalMemory + "Gb\n");
-            //return totalMemory;
+            WriteLine(totalMemory + " Gb\n");
         }
 
 
@@ -32,6 +31,19 @@ namespace CSharp_BackupCopy
         // Копирование информации на устройства.
         public static void CopyingInfo(WorkPC workPC, Storage[] storage)
         {
+            WriteLine(" До копирования:\n" + workPC);
+            Design.Line();
+
+            if (storage.Length > 0)
+            {
+                WriteLine(" >> Копирование.");
+            }
+            else
+            {
+                WriteLine(" --> Нет носителей на которые можно скопировать информацию.");
+                return;
+            }
+            
 
             while (workPC.TotalSizeOfFiles != 0)
             {
@@ -40,8 +52,9 @@ namespace CSharp_BackupCopy
                     item.CopyingDataToTheDevice(workPC);
                 }
             }
-            WriteLine();
-
+            
+            WriteLine("\n После копирования:\n" + workPC);
+            Design.Line();
         }
 
 
@@ -53,6 +66,12 @@ namespace CSharp_BackupCopy
             int readingTime = 0;
             int files;
             int totalSizeOfFiles = workPC.TotalSizeOfFiles;
+
+            if (storage.Length == 0) {
+                WriteLine(" --> Время рассчитать невозможно.");
+                WriteLine(" --> Нет носителей на которые можно скопировать информацию.");
+                return;
+            }
 
             while (totalSizeOfFiles != 0)
             {
@@ -85,6 +104,13 @@ namespace CSharp_BackupCopy
             int totalSizeOfFiles = workPC.TotalSizeOfFiles;
             int files;
             int[] arr = new int[storage.Length];
+
+            if (storage.Length == 0)
+            {
+                WriteLine(" --> Необходимое количество рассчитать невозможно.");
+                WriteLine(" --> Нет носителей на которые можно скопировать информацию.");
+                return;
+            }
 
             while (totalSizeOfFiles != 0) {
                 for (int i = 0; i < storage.Length; i++)
