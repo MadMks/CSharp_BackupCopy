@@ -13,11 +13,12 @@ namespace CSharp_BackupCopy
         public string Model { get; set; }
         public int BusyMemory { get; set; }
 
-        public Storage() : this("no name", "no model") { }
-        public Storage(string name, string model)
+        public Storage() : this("no name", "no model") { }  // TODO Busy
+        public Storage(string name, string model)   // TODO Busy
         {
             Name = name;
             Model = model;
+            BusyMemory = 0; // TODO check правильная ли последовательность запуска!?
         }
 
         // Получение объема памяти на носителе (max).
@@ -49,15 +50,15 @@ namespace CSharp_BackupCopy
 
         public Flash() { }
         public Flash(string name, string model) : base(name, model) {}
-        public Flash(string name, string model, int speed) : base(name, model)
-        {
-            _speed_USB_3 = speed;
-        }
+        //public Flash(string name, string model, int speed) : base(name, model)
+        //{
+        //    _speed_USB_3 = speed;
+        //}
         public Flash(string name, string model, int speed, int memory) : base(name, model)
         {
             _speed_USB_3 = speed;
             _memory = memory;
-            BusyMemory = 0;
+            //BusyMemory = 0;   // TODO del if оставить в Storage
         }
 
         // Получение объема памяти на носителе (max).
@@ -90,11 +91,6 @@ namespace CSharp_BackupCopy
                 $"\n Свободно: {FreeMemoryOnTheDevice()} Gb");  
         }
 
-        public override string ToString()
-        {
-            return base.ToString() +
-                $"\n Скорость: {_speed_USB_3} Mb/s\n Объем памяти: {_memory} Gb";
-        }
         // TODO использоваь вместо files !!!
         public override int PlacedFiles(int fileSize)
         {
@@ -110,25 +106,6 @@ namespace CSharp_BackupCopy
             return _speed_USB_3 * 60;
         }
 
-
-        //public static Storage Add()
-        //{
-        //    string name;
-        //    string model;
-        //    int speed;
-        //    int memory;
-
-        //    Write(" Введите название: ");
-        //    name = ReadLine();
-        //    Write(" Введите модель: ");
-        //    model = ReadLine();
-        //    Write(" Введите скорость (чтения/записи): ");
-        //    speed = Convert.ToInt32(ReadLine());
-        //    Write(" Введите объем памяти: ");
-        //    memory = Convert.ToInt32(ReadLine());
-
-        //    return new Flash(name, model, speed, memory);
-        //}
 
         public override Storage Add()
         {
@@ -148,5 +125,12 @@ namespace CSharp_BackupCopy
 
             return new Flash(name, model, speed, memory);
         }
+
+        public override string ToString()
+        {
+            return base.ToString() +
+                $"\n Скорость: {_speed_USB_3} Mb/s\n Объем памяти: {_memory} Gb";
+        }
+
     }
 }

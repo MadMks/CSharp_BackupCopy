@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Calculations.cs" />
     <Compile Include="Design.cs" />
+    <Compile Include="DVD.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
