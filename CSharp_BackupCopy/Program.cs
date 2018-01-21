@@ -5,6 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+enum DiskType
+{
+    eOneSide = 1,
+    eTwoSides
+}
+
+
 namespace CSharp_BackupCopy
 {
     class Program

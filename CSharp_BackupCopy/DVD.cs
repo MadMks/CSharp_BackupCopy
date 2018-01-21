@@ -11,21 +11,34 @@ namespace CSharp_BackupCopy
     {
         private int _speedReading;
         private int _speedRecord;
-        private int _diskType;
+        // Тип: односторонний (4Гб) или двухсторонний (9Гб)
+        //private int _diskType;
+        private DiskType _diskType;
+        private int _memory;
 
         public DVD() { }
         public DVD(string name, string model) : base(name, model) { }
-        public DVD(string name, string model, int speedRead, int speedRec, int diskType) 
+        public DVD(string name, string model, int speedRead, int speedRec, DiskType diskType) 
             : base(name, model)
         {
             _speedReading = speedRead;
             _speedRecord = speedRec;
             _diskType = diskType;
+
+            //if (_diskType == DiskType.eOneSide)
+            //{
+            //    _memory = 4;
+            //}
+            //else
+            //{
+            //    _memory = 9;
+            //}
+            _memory = _diskType == DiskType.eOneSide ? 4 : 9;
         }
 
         public override int GettingTheAmountOfMemory()
         {
-            return _diskType;
+            return _memory;
         }
 
         public override void CopyingDataToTheDevice(WorkPC workPC)
@@ -41,7 +54,7 @@ namespace CSharp_BackupCopy
 
         public override int FreeMemoryOnTheDevice()
         {
-            return _diskType - BusyMemory;
+            return _memory - BusyMemory;
         }
 
         public override void GettingFullInformationAboutTheDevice()
