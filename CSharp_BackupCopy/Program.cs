@@ -6,9 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-// Общий размер файлов (и размер 1го файла)
-// устанавливается ...  // TODO размер файлов на ПК
-
 
 enum DiskType
 {
@@ -25,7 +22,7 @@ namespace CSharp_BackupCopy
         {
             
             User user = new User();
-            WorkPC workPC = new WorkPC(5, 10);
+            WorkPC workPC = new WorkPC();
 
             try
             {
@@ -37,6 +34,11 @@ namespace CSharp_BackupCopy
                 WriteLine("\n [err] " + e.Message);
             }
             catch (FormatException e)
+            {
+                Design.Red();
+                WriteLine("\n [err] " + e.Message);
+            }
+            catch (DownloadMoreThanExistsException e)
             {
                 Design.Red();
                 WriteLine("\n [err] " + e.Message);

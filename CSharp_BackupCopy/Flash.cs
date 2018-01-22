@@ -20,13 +20,13 @@ namespace CSharp_BackupCopy
             _memory = memory;
         }
 
-        // Получение объема памяти на носителе (max).
+
         public override double GettingTheAmountOfMemory()
         {
             return _memory; // нет потери данных.
         }
-        // Копирование данных(файлов/папок) на устройство.
-        public override void CopyingDataToTheDevice(WorkPC workPc) // передаю файлы
+        
+        public override void CopyingDataToTheDevice(WorkPC workPc)
         {
             // Узнаем сколько файлов вмещается на флешку.
             int numberOfFiles = PlacedFiles(workPc.FileSize);
@@ -35,14 +35,20 @@ namespace CSharp_BackupCopy
             {
                 BusyMemory += workPc.FileSize;
                 workPc.TotalSizeOfFiles -= workPc.FileSize;
+
+                // Если файлов больше нет.
+                if (workPc.TotalSizeOfFiles == 0)
+                {
+                    return;
+                }
             }
         }
-        // Получение информации о свободном объеме памяти на устройстве.
+        
         public override double FreeMemoryOnTheDevice()
         {
             return _memory - BusyMemory;    // нет потери данных.
         }
-        // Получение общей/полной информации об устройстве.
+        
         public override void GettingFullInformationAboutTheDevice()
         {
             WriteLine(this);
@@ -60,6 +66,7 @@ namespace CSharp_BackupCopy
         {
             return _speed_USB_3 * 60;
         }
+
         public override int ReadingTime()
         {
             return _speed_USB_3 * 60;
@@ -91,8 +98,7 @@ namespace CSharp_BackupCopy
                 $"\n Скорость: {_speed_USB_3} Mb/s\n Объем памяти: {_memory} Gb";
         }
 
+
+
     }
-
-
-
 }

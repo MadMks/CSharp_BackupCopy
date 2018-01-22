@@ -15,17 +15,24 @@ namespace CSharp_BackupCopy
 
             ConsoleKeyInfo SymbolKey;
 
+            // Просим ввести данные о файлах на ПК.
+            Write("\n Введите размер одного файла (на ПК): ");
+            workPC.FileSize = Convert.ToInt32(ReadLine());
+            Write(" Введите кол-во файлов (на ПК): ");
+            workPC.TotalSizeOfFiles = workPC.FileSize * Convert.ToInt32(ReadLine());
 
+            // Запуск меню.
             while (true) {
 
                 WriteLine("\n Меню:");
 
-                WriteLine(" 1 - Посмотреть список носителей");
-                WriteLine(" 2 - Добавить носитель");
-                WriteLine(" 3 - Общее количество памяти всех носителей");
-                WriteLine(" 4 - Копирование информации на носители");
-                WriteLine(" 5 - Время необходимое для копирования");
-                WriteLine(" 6 - Необходимое количество носителей");
+                WriteLine(" 1 - Посмотреть данные о файлах на ПК");
+                WriteLine(" 2 - Посмотреть список носителей");
+                WriteLine(" 3 - Добавить носитель");
+                WriteLine(" 4 - Общее количество памяти всех носителей");
+                WriteLine(" 5 - Копирование информации на носители");
+                WriteLine(" 6 - Время необходимое для копирования");
+                WriteLine(" 7 - Необходимое количество носителей");
                 WriteLine(" 0 - Выход");
 
                 Write(" Ваш выбор: ");
@@ -35,34 +42,37 @@ namespace CSharp_BackupCopy
 
                 switch (SymbolKey.Key)
                 {
-                    case ConsoleKey.D1 :
+                    case ConsoleKey.D1:
                     case ConsoleKey.NumPad1:
-                        PrintStorage(user.GetDevices());
+                        WriteLine(workPC);
                         break;
-                    case ConsoleKey.D2:
+                    case ConsoleKey.D2 :
                     case ConsoleKey.NumPad2:
-                        AddUserStorage(user);
+                        PrintStorage(user.GetDevices());
                         break;
                     case ConsoleKey.D3:
                     case ConsoleKey.NumPad3:
-                        Calculations.TotalDeviceMemory(user.GetDevices());
+                        AddUserStorage(user);
                         break;
                     case ConsoleKey.D4:
                     case ConsoleKey.NumPad4:
-                        Calculations.CopyingInfo(workPC, user.GetDevices());
+                        Calculations.TotalDeviceMemory(user.GetDevices());
                         break;
                     case ConsoleKey.D5:
                     case ConsoleKey.NumPad5:
-                        Calculations.CopyTime(workPC, user.GetDevices());
+                        Calculations.CopyingInfo(workPC, user.GetDevices());
                         break;
                     case ConsoleKey.D6:
                     case ConsoleKey.NumPad6:
+                        Calculations.CopyTime(workPC, user.GetDevices());
+                        break;
+                    case ConsoleKey.D7:
+                    case ConsoleKey.NumPad7:
                         Calculations.NumberOfStorage(workPC, user.GetDevices());
                         break;
                     default:
                         break;
                 }
-
 
                 if (SymbolKey.Key == ConsoleKey.D0 ||
                     SymbolKey.Key == ConsoleKey.Escape ||
@@ -78,6 +88,7 @@ namespace CSharp_BackupCopy
             }
 
         }
+
 
 
         public static void PrintStorage(Storage[] storage)
@@ -97,6 +108,7 @@ namespace CSharp_BackupCopy
                 WriteLine();
             }
         }
+
 
 
         public static void AddUserStorage(User user)
@@ -133,10 +145,10 @@ namespace CSharp_BackupCopy
                     WriteLine("\n [err] Недопустимый тип носителя.");
                     Design.Default();
                     break;
-            }
-
-            
+            }  
         }
+
+
 
     }
 }

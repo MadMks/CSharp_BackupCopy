@@ -9,9 +9,11 @@ namespace CSharp_BackupCopy
 {
     class DVD : Storage
     {
+        const double SIZE_ONE_SIDE = 4.7;
+
         private int _speedReading;
         private int _speedRecord;
-        // Тип: односторонний (4Гб) или двухсторонний (9Гб)
+        // Тип: односторонний (4.7Гб) или двухсторонний (9Гб)
         private DiskType _diskType;
         private double _memory;
 
@@ -23,7 +25,7 @@ namespace CSharp_BackupCopy
             _speedReading = speedRead;
             _speedRecord = speedRec;
             _diskType = diskType;
-            _memory = (_diskType == DiskType.eOneSide ? 4.7 : 4.7 * 2);
+            _memory = (_diskType == DiskType.eOneSide ? SIZE_ONE_SIDE : SIZE_ONE_SIDE * 2);
         }
 
         public override double GettingTheAmountOfMemory()
@@ -39,6 +41,12 @@ namespace CSharp_BackupCopy
             {
                 BusyMemory += workPC.FileSize;
                 workPC.TotalSizeOfFiles -= workPC.FileSize;
+
+                // Если файлов больше нет.
+                if (workPC.TotalSizeOfFiles == 0)
+                {
+                    return;
+                }
             }
         }
 
@@ -56,7 +64,7 @@ namespace CSharp_BackupCopy
 
         public override int PlacedFiles(int fileSize)
         {
-            return (int)(4.7 / fileSize) * (int)_diskType;
+            return (int)(SIZE_ONE_SIDE / fileSize) * (int)_diskType;
         }
 
         public override int RecordingTime()
@@ -115,5 +123,8 @@ namespace CSharp_BackupCopy
                 + $"\n Скорость записи: {_speedRecord} Mb/s"
                 + $"\n Объем памяти: {_memory} Gb";
         }
+
+
+
     }
 }

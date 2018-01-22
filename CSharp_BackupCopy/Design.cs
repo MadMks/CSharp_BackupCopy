@@ -35,7 +35,6 @@ namespace CSharp_BackupCopy
             Console.ForegroundColor = ConsoleColor.Cyan;
         }
 
+
     }
-
-
 }

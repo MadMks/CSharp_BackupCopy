@@ -34,7 +34,14 @@ namespace CSharp_BackupCopy
             WriteLine(" До копирования:\n" + workPC);
             Design.Line();
 
-            if (storage.Length > 0)
+            if (storage.Length == 0)    // если нет носителей.
+            {
+                Design.Blue();
+                WriteLine(" --> Нет носителей на которые можно скопировать информацию.");
+                Design.Default();
+                return;
+            }
+            else if (FileIsPlaced(workPC.FileSize, storage))    // если файл вмещаеться.
             {
                 Design.Green();
                 WriteLine(" >> Копирование.");
@@ -43,23 +50,39 @@ namespace CSharp_BackupCopy
             else
             {
                 Design.Blue();
-                WriteLine(" --> Нет носителей на которые можно скопировать информацию.");
+                WriteLine(" --> Файлы не вмещаються на данные носители.");
                 Design.Default();
                 return;
             }
-            
-
+           
+            // Копирование.
             while (workPC.TotalSizeOfFiles != 0)
             {
                 foreach (Storage item in storage)
                 {
                     item.CopyingDataToTheDevice(workPC);
+
+                    // После каждого копирования на носитель, нужно скачать
+                    // с него записанную информацию:
+                    // имитируем скачивание приравниванием к "0".
+                    item.BusyMemory = 0;    // освободили носитель.
+
+                    // Если все скопировали.
+                    if (workPC.TotalSizeOfFiles == 0)
+                    {
+                        break;
+                    }
+                }
+
+                if (workPC.TotalSizeOfFiles < 0)
+                {
+                    throw new DownloadMoreThanExistsException();
                 }
             }
 
-            // P.S.
             // Файлов на пк больше нет - значит размер файла можно приравнять к 0.
-            // Соответственно на носителе в переменной можно хранить размер одного файла.
+            // (P.S. Соответственно на носителе в переменной можно хранить размер одного файла).
+            workPC.FileSize = 0;
             
             WriteLine("\n После копирования:\n" + workPC);
             Design.Line();
@@ -75,19 +98,37 @@ namespace CSharp_BackupCopy
             int files;
             int totalSizeOfFiles = workPC.TotalSizeOfFiles;
 
-            if (storage.Length == 0) {
+            if (storage.Length == 0)    // если нет носителей.
+            {
                 Design.Blue();
                 WriteLine(" --> Время рассчитать невозможно.");
                 WriteLine(" --> Нет носителей на которые можно скопировать информацию.");
                 Design.Default();
                 return;
             }
+            else if (!FileIsPlaced(workPC.FileSize, storage))
+            {
+                Design.Blue();
+                WriteLine(" --> Файлы не вмещаються на данные носители.");
+                Design.Default();
+                return;
+            }
 
+            // Пока не посчитаем время копирования всех файлов.
             while (totalSizeOfFiles != 0)
             {
+
                 foreach (Storage item in storage)
                 {
                     files = item.PlacedFiles(workPC.FileSize);
+
+                    // Если файлов осталось меньше чем вмещаеться на носитель.
+                    if ((totalSizeOfFiles / workPC.FileSize) < files)
+                    {
+                        // то запомним сколько осталось файлов.
+                        files = totalSizeOfFiles / workPC.FileSize;
+                    }
+
                     // Если кол-во файлов = 0,
                     // то переходим к следующему носителю.
                     if (files == 0)
@@ -99,16 +140,18 @@ namespace CSharp_BackupCopy
                     // Отнимаем от общего размера, размер вмещающихся файлов.
                     totalSizeOfFiles =
                         totalSizeOfFiles - (workPC.FileSize * files);
+
+                    if (totalSizeOfFiles == 0)
+                    {
+                        break;
+                    }
                 }
 
-                // Если ни один файл не скопирован (после проверки каждого носителя).
-                if (workPC.TotalSizeOfFiles == totalSizeOfFiles)
+                if (totalSizeOfFiles < 0)
                 {
-                    Design.Blue();
-                    WriteLine(" --> Файлы не вмещаються на данные носители.");
-                    Design.Default();
-                    return;
+                    throw new DownloadMoreThanExistsException();
                 }
+
             }
 
             WriteLine($" Время копирования на носители: {recordingTime} мин");
@@ -128,7 +171,7 @@ namespace CSharp_BackupCopy
             int files;
             int[] arr = new int[storage.Length];
 
-            if (storage.Length == 0)
+            if (storage.Length == 0)    // если нет носителей.
             {
                 Design.Blue();
                 WriteLine(" --> Необходимое количество рассчитать невозможно.");
@@ -136,15 +179,34 @@ namespace CSharp_BackupCopy
                 Design.Default();
                 return;
             }
-
+            else if (!FileIsPlaced(workPC.FileSize, storage))
+            {
+                Design.Blue();
+                WriteLine(" --> Файлы не вмещаються на данные носители.");
+                Design.Default();
+                return;
+            }
+   
             while (totalSizeOfFiles != 0) {
                 for (int i = 0; i < storage.Length; i++)
                 {
 
                     // Узнаем кол-во файлов вмещающихся на носитель.
                     files = storage[i].PlacedFiles(workPC.FileSize);
-                    // Если кол-во файлов = 0, то при вычислении
-                    // размер вмещающихся файлов тоже = 0.
+
+                    // Если файлов осталось меньше чем вмещаеться на носитель.
+                    if ((totalSizeOfFiles / workPC.FileSize) < files)
+                    {
+                        // то запомним сколько осталось файлов.
+                        files = totalSizeOfFiles / workPC.FileSize;
+                    }
+
+                    // Если кол-во файлов = 0,
+                    // то переходим к следующему носителю.
+                    if (files == 0)
+                    {
+                        continue;
+                    }
                     // Отнимаем от общего размера, размер вмещающихся файлов.
                     totalSizeOfFiles =
                         totalSizeOfFiles - (workPC.FileSize * files);
@@ -154,15 +216,45 @@ namespace CSharp_BackupCopy
                     {
                         arr[i]++;
                     }
-                }
-            }
 
+                    if (totalSizeOfFiles == 0)
+                    {
+                        break;
+                    }
+                }
+
+                if (totalSizeOfFiles < 0)
+                {
+                    throw new DownloadMoreThanExistsException();
+                }
+
+            }
 
             for (int i = 0; i < storage.Length; i++)
             {
                 WriteLine($" Количество {storage[i].Name}: {arr[i]}");
             }
 
+        }
+
+
+
+        // Файл вмещаеться на один из носителей.
+        public static bool FileIsPlaced(int fileSize, Storage[] storage)
+        {
+            foreach (Storage item in storage)
+            {
+                // Если файл не влазит.
+                if (item.PlacedFiles(fileSize) == 0)
+                {
+                    continue;   // проверяем след. носитель.
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            return false;   // файл не влез ни на один носитель.
         }
 
 

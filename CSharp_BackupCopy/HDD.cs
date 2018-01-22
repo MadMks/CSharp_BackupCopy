@@ -38,6 +38,12 @@ namespace CSharp_BackupCopy
             {
                 BusyMemory += workPC.FileSize;
                 workPC.TotalSizeOfFiles -= workPC.FileSize;
+
+                // Если файлов больше нет.
+                if (workPC.TotalSizeOfFiles == 0)
+                {
+                    return;
+                }
             }
         }
 
@@ -97,8 +103,8 @@ namespace CSharp_BackupCopy
                 + $"\n Кол-во разделов: {_numberOfPartitions} шт"
                 + $"\n Объем разделов: {_sizeOfPartitions} Gb";
         }
+
+
+
     }
-
-
-
 }
