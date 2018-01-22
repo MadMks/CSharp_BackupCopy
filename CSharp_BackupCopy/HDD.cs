@@ -30,33 +30,9 @@ namespace CSharp_BackupCopy
             return _numberOfPartitions * _sizeOfPartitions; // нет потери данных.
         }
 
-        public override void CopyingDataToTheDevice(WorkPC workPC)
-        {
-            int numberOfFiles = PlacedFiles(workPC.FileSize);
-
-            for (int i = 0; i < numberOfFiles; i++)
-            {
-                BusyMemory += workPC.FileSize;
-                workPC.TotalSizeOfFiles -= workPC.FileSize;
-
-                // Если файлов больше нет.
-                if (workPC.TotalSizeOfFiles == 0)
-                {
-                    return;
-                }
-            }
-        }
-
         public override double FreeMemoryOnTheDevice()
         {
             return GettingTheAmountOfMemory() - BusyMemory; // нет потери данных.
-        }
-
-        public override void GettingFullInformationAboutTheDevice()
-        {
-            WriteLine(this);
-            WriteLine($" Занято: {BusyMemory} Gb" +
-                $"\n Свободно: {FreeMemoryOnTheDevice()} Gb");
         }
 
         public override int PlacedFiles(int fileSize)   // на все разделы.
@@ -101,7 +77,7 @@ namespace CSharp_BackupCopy
             return base.ToString() +
                 $"\n Скорость (чтения/записи): {_speed_USB_2} Mb/s"
                 + $"\n Кол-во разделов: {_numberOfPartitions} шт"
-                + $"\n Объем разделов: {_sizeOfPartitions} Gb";
+                + $"\n Объем раздела: {_sizeOfPartitions} Gb";
         }
 
 

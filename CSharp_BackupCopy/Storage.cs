@@ -26,11 +26,32 @@ namespace CSharp_BackupCopy
         // Получение объема памяти на носителе (max).
         public abstract double GettingTheAmountOfMemory();
         // Копирование данных(файлов/папок) на устройство.
-        public abstract void CopyingDataToTheDevice(WorkPC workPC);
+        public virtual void CopyingDataToTheDevice(WorkPC workPC)
+        {
+            // Узнаем сколько файлов вмещается на носитель.
+            int numberOfFiles = PlacedFiles(workPC.FileSize);
+
+            for (int i = 0; i < numberOfFiles; i++)
+            {
+                BusyMemory += workPC.FileSize;
+                workPC.TotalSizeOfFiles -= workPC.FileSize;
+
+                // Если файлов больше нет.
+                if (workPC.TotalSizeOfFiles == 0)
+                {
+                    return;
+                }
+            }
+        }
         // Получение информации о свободном объеме памяти на устройстве.
         public abstract double FreeMemoryOnTheDevice();
         // Получение общей/полной информации об устройстве.
-        public abstract void GettingFullInformationAboutTheDevice();
+        public virtual void GettingFullInformationAboutTheDevice()
+        {
+            WriteLine(this);
+            WriteLine($" Занято: {BusyMemory} Gb" +
+                $"\n Свободно: {FreeMemoryOnTheDevice()} Gb");
+        }
 
         public override string ToString()
         {

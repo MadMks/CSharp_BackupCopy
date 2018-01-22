@@ -26,36 +26,10 @@ namespace CSharp_BackupCopy
             return _memory; // нет потери данных.
         }
         
-        public override void CopyingDataToTheDevice(WorkPC workPc)
-        {
-            // Узнаем сколько файлов вмещается на флешку.
-            int numberOfFiles = PlacedFiles(workPc.FileSize);
-
-            for (int i = 0; i < numberOfFiles; i++)
-            {
-                BusyMemory += workPc.FileSize;
-                workPc.TotalSizeOfFiles -= workPc.FileSize;
-
-                // Если файлов больше нет.
-                if (workPc.TotalSizeOfFiles == 0)
-                {
-                    return;
-                }
-            }
-        }
-        
         public override double FreeMemoryOnTheDevice()
         {
             return _memory - BusyMemory;    // нет потери данных.
         }
-        
-        public override void GettingFullInformationAboutTheDevice()
-        {
-            WriteLine(this);
-            WriteLine($" Занято: {BusyMemory} Gb" +
-                $"\n Свободно: {FreeMemoryOnTheDevice()} Gb");
-        }
-
 
         public override int PlacedFiles(int fileSize)
         {
