@@ -6,6 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 
+// Общий размер файлов (и размер 1го файла)
+// устанавливается ...  // TODO размер файлов на ПК
+
+
 enum DiskType
 {
     eOneSide = 1,
@@ -19,43 +23,36 @@ namespace CSharp_BackupCopy
     {
         static void Main(string[] args)
         {
-            //WorkPC workPC = new WorkPC();
-
-            //Storage st = new Flash(); // test
-
-            //Storage storage1 = new Flash("Transcend", "TX", 5, 8);
-            //Storage storage2 = new Flash("Respect", "TX", 10, 4);
-            ////WriteLine(st);
-            //User user = new User();
-            //user.AddStorage(storage1);
-            //user.AddStorage(storage2);
-
-            //Write(" Общее кол-во памяти всех устройств: ");
-            //WriteLine(Calculations.TotalDeviceMemory(user.GetDevices()) + "\n");
-            //Design.Line();
-
-            //WriteLine(workPC);
-            //Design.Line();
-
-            //Calculations.NumberOfStorage(workPC, user.GetDevices());
-            //Design.Line();
-            //WriteLine(workPC);
-            //Design.Line();
-
-
-            //Calculations.CopyTime(workPC, user.GetDevices());
-            //Design.Line();
-
-            //Write(" Копируем все файлы: ");
-            //Calculations.CopyingInfo(workPC, user.GetDevices());
-            //WriteLine(workPC);
-
-            //Menu menu = new Menu();
             
             User user = new User();
-            WorkPC workPC = new WorkPC();
-            Menu.Start(user, workPC);
-            //Menu.AddUserStorage(user);
+            WorkPC workPC = new WorkPC(5, 10);
+
+            try
+            {
+                Menu.Start(user, workPC);
+            }
+            catch (DivideByZeroException e)
+            {
+                Design.Red();
+                WriteLine("\n [err] " + e.Message);
+            }
+            catch (FormatException e)
+            {
+                Design.Red();
+                WriteLine("\n [err] " + e.Message);
+            }
+            catch (Exception e)
+            {
+                Design.Red();
+                WriteLine("\n [err] " + e.Message);
+            }
+            finally
+            {
+                Design.Default();
+                WriteLine("\n >>> Завершение программы.\n");
+            }
+            
+
         }
     }
 }

@@ -15,7 +15,7 @@ namespace CSharp_BackupCopy
         // Расчет общего количества памяти всех устройств.
         public static void TotalDeviceMemory(Storage[] storage)
         {
-            int totalMemory = 0;
+            double totalMemory = 0;
 
             foreach (Storage item in storage)
             {
@@ -36,11 +36,15 @@ namespace CSharp_BackupCopy
 
             if (storage.Length > 0)
             {
+                Design.Green();
                 WriteLine(" >> Копирование.");
+                Design.Default();
             }
             else
             {
+                Design.Blue();
                 WriteLine(" --> Нет носителей на которые можно скопировать информацию.");
+                Design.Default();
                 return;
             }
             
@@ -52,6 +56,10 @@ namespace CSharp_BackupCopy
                     item.CopyingDataToTheDevice(workPC);
                 }
             }
+
+            // P.S.
+            // Файлов на пк больше нет - значит размер файла можно приравнять к 0.
+            // Соответственно на носителе в переменной можно хранить размер одного файла.
             
             WriteLine("\n После копирования:\n" + workPC);
             Design.Line();
@@ -68,8 +76,10 @@ namespace CSharp_BackupCopy
             int totalSizeOfFiles = workPC.TotalSizeOfFiles;
 
             if (storage.Length == 0) {
+                Design.Blue();
                 WriteLine(" --> Время рассчитать невозможно.");
                 WriteLine(" --> Нет носителей на которые можно скопировать информацию.");
+                Design.Default();
                 return;
             }
 
@@ -78,13 +88,26 @@ namespace CSharp_BackupCopy
                 foreach (Storage item in storage)
                 {
                     files = item.PlacedFiles(workPC.FileSize);
-                    // Если кол-во файлов = 0, то при вычислении
-                    // затраченное на них время тоже = 0.
+                    // Если кол-во файлов = 0,
+                    // то переходим к следующему носителю.
+                    if (files == 0)
+                    {
+                        continue;
+                    }
                     recordingTime += ((workPC.FileSize * files) * 1024) / item.RecordingTime();
                     readingTime += ((workPC.FileSize * files) * 1024) / item.ReadingTime();
                     // Отнимаем от общего размера, размер вмещающихся файлов.
                     totalSizeOfFiles =
                         totalSizeOfFiles - (workPC.FileSize * files);
+                }
+
+                // Если ни один файл не скопирован (после проверки каждого носителя).
+                if (workPC.TotalSizeOfFiles == totalSizeOfFiles)
+                {
+                    Design.Blue();
+                    WriteLine(" --> Файлы не вмещаються на данные носители.");
+                    Design.Default();
+                    return;
                 }
             }
 
@@ -107,8 +130,10 @@ namespace CSharp_BackupCopy
 
             if (storage.Length == 0)
             {
+                Design.Blue();
                 WriteLine(" --> Необходимое количество рассчитать невозможно.");
                 WriteLine(" --> Нет носителей на которые можно скопировать информацию.");
+                Design.Default();
                 return;
             }
 

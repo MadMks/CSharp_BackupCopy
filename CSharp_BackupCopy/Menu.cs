@@ -15,12 +15,9 @@ namespace CSharp_BackupCopy
 
             ConsoleKeyInfo SymbolKey;
 
-            //do
-            //{
+
             while (true) {
 
-                //ReadKey();
-                //Clear();
                 WriteLine("\n Меню:");
 
                 WriteLine(" 1 - Посмотреть список носителей");
@@ -38,34 +35,38 @@ namespace CSharp_BackupCopy
 
                 switch (SymbolKey.Key)
                 {
-                    case ConsoleKey.D1:
+                    case ConsoleKey.D1 :
+                    case ConsoleKey.NumPad1:
                         PrintStorage(user.GetDevices());
                         break;
                     case ConsoleKey.D2:
+                    case ConsoleKey.NumPad2:
                         AddUserStorage(user);
                         break;
                     case ConsoleKey.D3:
+                    case ConsoleKey.NumPad3:
                         Calculations.TotalDeviceMemory(user.GetDevices());
                         break;
                     case ConsoleKey.D4:
+                    case ConsoleKey.NumPad4:
                         Calculations.CopyingInfo(workPC, user.GetDevices());
                         break;
                     case ConsoleKey.D5:
+                    case ConsoleKey.NumPad5:
                         Calculations.CopyTime(workPC, user.GetDevices());
                         break;
                     case ConsoleKey.D6:
+                    case ConsoleKey.NumPad6:
                         Calculations.NumberOfStorage(workPC, user.GetDevices());
                         break;
                     default:
                         break;
                 }
 
-                // Пауза
-                //WriteLine("\n\n Нажмите любую клавишу для продолжения ...");
-                //ReadKey();
-                //Clear();
 
-                if (SymbolKey.Key == ConsoleKey.D0 || SymbolKey.Key == ConsoleKey.Escape)
+                if (SymbolKey.Key == ConsoleKey.D0 ||
+                    SymbolKey.Key == ConsoleKey.Escape ||
+                    SymbolKey.Key == ConsoleKey.NumPad0)
                 {
                     return;
                 }
@@ -74,7 +75,6 @@ namespace CSharp_BackupCopy
                 ReadKey();
                 Clear();
 
-                //} while (true);
             }
 
         }
@@ -86,7 +86,9 @@ namespace CSharp_BackupCopy
 
             if (storage.Length == 0)
             {
+                Design.Blue();
                 WriteLine("\n --> Носителей нет.");
+                Design.Default();
             }
 
             foreach (Storage item in storage)
@@ -115,13 +117,21 @@ namespace CSharp_BackupCopy
             switch (SymbolKey.Key)
             {
                 case ConsoleKey.D1 :
+                case ConsoleKey.NumPad1 :
                     user.AddStorage(new Flash().Add());
                     break;
                 case ConsoleKey.D2 :
-                    user.AddStorage(new Flash().Add());
+                case ConsoleKey.NumPad2 :
+                    user.AddStorage(new DVD().Add());
                     break;
-                    // TODO  DVD and HDD
+                case ConsoleKey.D3:
+                case ConsoleKey.NumPad3:
+                    user.AddStorage(new HDD().Add());
+                    break;
                 default:
+                    Design.Red();
+                    WriteLine("\n [err] Недопустимый тип носителя.");
+                    Design.Default();
                     break;
             }
 

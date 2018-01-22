@@ -12,9 +12,8 @@ namespace CSharp_BackupCopy
         private int _speedReading;
         private int _speedRecord;
         // Тип: односторонний (4Гб) или двухсторонний (9Гб)
-        //private int _diskType;
         private DiskType _diskType;
-        private int _memory;
+        private double _memory;
 
         public DVD() { }
         public DVD(string name, string model) : base(name, model) { }
@@ -24,19 +23,10 @@ namespace CSharp_BackupCopy
             _speedReading = speedRead;
             _speedRecord = speedRec;
             _diskType = diskType;
-
-            //if (_diskType == DiskType.eOneSide)
-            //{
-            //    _memory = 4;
-            //}
-            //else
-            //{
-            //    _memory = 9;
-            //}
-            _memory = _diskType == DiskType.eOneSide ? 4 : 9;
+            _memory = (_diskType == DiskType.eOneSide ? 4.7 : 4.7 * 2);
         }
 
-        public override int GettingTheAmountOfMemory()
+        public override double GettingTheAmountOfMemory()
         {
             return _memory;
         }
@@ -52,7 +42,7 @@ namespace CSharp_BackupCopy
             }
         }
 
-        public override int FreeMemoryOnTheDevice()
+        public override double FreeMemoryOnTheDevice()
         {
             return _memory - BusyMemory;
         }
@@ -66,29 +56,64 @@ namespace CSharp_BackupCopy
 
         public override int PlacedFiles(int fileSize)
         {
-            throw new NotImplementedException();
+            return (int)(4.7 / fileSize) * (int)_diskType;
         }
 
         public override int RecordingTime()
         {
-            throw new NotImplementedException();
+            return _speedRecord * 60;
         }
 
         public override int ReadingTime()
         {
-            throw new NotImplementedException();
+            return _speedReading * 60;
         }
 
         public override Storage Add()
         {
-            throw new NotImplementedException();
+            string name;
+            string model;
+            int speedRead;
+            int speedRec;
+            DiskType diskType;
+            int tempType;
+
+            Write(" Введите название: ");
+            name = ReadLine();
+            Write(" Введите модель: ");
+            model = ReadLine();
+            Write(" Введите скорость (чтения): ");
+            speedRead = Convert.ToInt32(ReadLine());
+            Write(" Введите скорость (записи): ");
+            speedRec = Convert.ToInt32(ReadLine());
+
+            do
+            {
+                WriteLine(" Введите тип диска: ");
+                WriteLine("  1 - 4,7 Gb\n  2 - 9,0 Gb");
+                Write(" Тип: ");
+                tempType = Convert.ToInt32(ReadLine());
+
+                if (tempType < 1 || tempType > 2)
+                {
+                    Design.Red();
+                    WriteLine("\n [err] Недопустимый тип диска." +
+                        "\n - Повторите ввод!\n");
+                    Design.Default();
+                }   
+            } while (tempType < 1 || tempType > 2);
+
+            diskType = (DiskType)tempType;
+
+            return new DVD(name, model, speedRead, speedRec, diskType);
         }
 
         public override string ToString()
         {
             return base.ToString() +
-                $"\n Скорость чтения: {_speedReading} Mb/s\n Скорость записи: {_speedRecord}" + 
-                $"\n Объем памяти: {_diskType} Gb";
+                $"\n Скорость чтения: {_speedReading} Mb/s" 
+                + $"\n Скорость записи: {_speedRecord} Mb/s"
+                + $"\n Объем памяти: {_memory} Gb";
         }
     }
 }

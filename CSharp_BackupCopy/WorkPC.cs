@@ -11,10 +11,11 @@ namespace CSharp_BackupCopy
         public int TotalSizeOfFiles { get; set; }  
         public int FileSize { get; set; }
 
-        public WorkPC()
+        public WorkPC() : this(0,0) { }
+        public WorkPC(int fileSize, int totalSize)
         {
-            TotalSizeOfFiles = 10;
-            FileSize = 5;
+            FileSize = fileSize;
+            TotalSizeOfFiles = totalSize;
         }
 
         public override string ToString()

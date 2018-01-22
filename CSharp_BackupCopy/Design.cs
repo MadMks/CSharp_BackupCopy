@@ -6,18 +6,36 @@ using System.Threading.Tasks;
 
 namespace CSharp_BackupCopy
 {
+
+
     class Design
     {
-        //public static string Line { get; }
 
-        //static Design()
-        //{
-        //    Line = new string('_', 36) + '\n';
-        //}
-
+        // Линия.
         public static void Line()
         {
             Console.WriteLine(new string('_', 36) + '\n');
         }
+
+        // Цвета.
+        public static void Default()
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+        public static void Green()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+        }
+        public static void Red()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+        }
+        public static void Blue()
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+        }
+
     }
+
+
 }
